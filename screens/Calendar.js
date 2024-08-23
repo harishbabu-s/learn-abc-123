@@ -52,7 +52,7 @@ export default function CalendarScreen() {
   async function playSound(fileName) {
     const { sound } = await Audio.Sound
       .createAsync
-      //   require(`../assets/calendar/${fileName}.aac`)
+      //   require(`../assets/calendar/${fileName}.mp3`)
       ();
     setSound(sound);
     await sound.playAsync();

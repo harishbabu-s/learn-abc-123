@@ -23,7 +23,7 @@ export default function NumbersScreen() {
   async function playSound(number) {
     const { sound } = await Audio.Sound
       .createAsync
-      //   require(`../assets/numbers/${number}.aac`)
+      // require(`../assets/numbers/${number}.mp3`)
       ();
     setSound(sound);
     await sound.playAsync();
@@ -94,7 +94,6 @@ export default function NumbersScreen() {
           renderItem={renderNumber}
           keyExtractor={(item) => item.toString()}
           numColumns={10}
-          horizontal
           contentContainerStyle={styles.gridContainer}
         />
       )}
