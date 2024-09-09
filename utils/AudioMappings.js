@@ -28,3 +28,36 @@ export const alphabetSounds = {
 };
 
 export const smallSound = require("../assets/alphabets/small.mp3");
+
+export const numberSounds = {
+  0: require("../assets/numbers/0.mp3"),
+  1: require("../assets/numbers/1.mp3"),
+  2: require("../assets/numbers/2.mp3"),
+  3: require("../assets/numbers/3.mp3"),
+  4: require("../assets/numbers/4.mp3"),
+  5: require("../assets/numbers/5.mp3"),
+  6: require("../assets/numbers/6.mp3"),
+  7: require("../assets/numbers/7.mp3"),
+  8: require("../assets/numbers/8.mp3"),
+  9: require("../assets/numbers/9.mp3"),
+  10: require("../assets/numbers/10.mp3"),
+  11: require("../assets/numbers/11.mp3"),
+  12: require("../assets/numbers/12.mp3"),
+  13: require("../assets/numbers/13.mp3"),
+  14: require("../assets/numbers/14.mp3"),
+  15: require("../assets/numbers/15.mp3"),
+  16: require("../assets/numbers/16.mp3"),
+  17: require("../assets/numbers/17.mp3"),
+  18: require("../assets/numbers/18.mp3"),
+  19: require("../assets/numbers/19.mp3"),
+  20: require("../assets/numbers/20.mp3"),
+  30: require("../assets/numbers/30.mp3"),
+  40: require("../assets/numbers/40.mp3"),
+  50: require("../assets/numbers/50.mp3"),
+  60: require("../assets/numbers/60.mp3"),
+  70: require("../assets/numbers/70.mp3"),
+  80: require("../assets/numbers/80.mp3"),
+  90: require("../assets/numbers/90.mp3"),
+  100: require("../assets/numbers/100.mp3"),
+  1000: require("../assets/numbers/1000.mp3"),
+};

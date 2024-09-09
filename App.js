@@ -5,6 +5,7 @@ import HomeScreen from "./screens/HomeScreen";
 import AlphabetsScreen from "./screens/Alphabets";
 import NumbersScreen from "./screens/Numbers";
 import CalendarScreen from "./screens/Calendar";
+import TempScreen from "./screens/newTemp";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name="Alphabets" component={AlphabetsScreen} />
         <Stack.Screen name="Numbers" component={NumbersScreen} />
         <Stack.Screen name="Calendar" component={CalendarScreen} />
+        <Stack.Screen name="temp" component={TempScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
