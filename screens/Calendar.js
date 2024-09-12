@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Audio } from "expo-av";
+import { calendar } from "../utils/AudioMappings";
 
 const months = [
   "January",
@@ -40,22 +41,48 @@ const days = Array.from({ length: 31 }, (_, i) =>
 const years = Array.from({ length: 100 }, (_, i) => String(1970 + i));
 
 export default function CalendarScreen() {
+  const currentDate = new Date();
+
   const [activeSection, setActiveSection] = useState(null);
-  const [fastAudio, setFastAudio] = useState(false);
+  const [slowAudio, setSlowAudio] = useState(false);
   const [sound, setSound] = useState();
   const [selectedDate, setSelectedDate] = useState({
-    day: "01",
-    month: "01",
-    year: "2024",
+    day: currentDate.getDate(),
+    month: currentDate.getMonth(),
+    year: currentDate.getFullYear(),
   });
 
-  async function playSound(fileName) {
-    const { sound } = await Audio.Sound
-      .createAsync
-      //   require(`../assets/calendar/${fileName}.mp3`)
-      ();
-    setSound(sound);
-    await sound.playAsync();
+  async function playSound(section, atribute) {
+    // const { sound } = await Audio.Sound
+    //   .createAsync
+    //   //   require(`../assets/calendar/${fileName}.mp3`)
+    //   ();
+    // setSound(sound);
+    // await sound.playAsync();
+    try {
+      if (sound) {
+        await sound.unloadAsync();
+      }
+      if (!calendar[section][atribute]) {
+        throw new Error(`Sound file not found for ${atribute}`);
+      }
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        calendar[section][atribute]
+      );
+      await newSound.setRateAsync(slowAudio ? 0.3 : 1, true);
+      await newSound.playAsync();
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, slowAudio ? 4000 : 1500)
+      );
+      await newSound.unloadAsync();
+    } catch (error) {
+      console.error("Error playing sound:", error);
+      Alert.alert(
+        "Error",
+        "There was an error playing the sound. Please try again."
+      );
+    }
   }
 
   useEffect(() => {
@@ -66,21 +93,24 @@ export default function CalendarScreen() {
       : undefined;
   }, [sound]);
 
+  const toggleSpeed = () => {
+    setSlowAudio(!slowAudio);
+  };
+
   const spellWord = (word) => {
     // Implement spelling logic here
     console.log(`Spelling ${word}`);
   };
 
   const playAlternateLanguage = (word) => {
-    // Implement alternate language audio here
     console.log(`Playing ${word} in alternate language`);
   };
 
-  const renderItem = ({ item, section }) => (
+  const renderItem = ({ section, item }) => (
     <View style={styles.itemContainer}>
       <TouchableOpacity
         style={styles.itemButton}
-        onPress={() => playSound(`${section}_${item.toLowerCase()}`)}
+        onPress={() => playSound(section, item.toLowerCase())}
       >
         <Text style={styles.itemText}>{item}</Text>
       </TouchableOpacity>
@@ -175,19 +205,17 @@ export default function CalendarScreen() {
           <Text style={styles.buttonText}>Date</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, fastAudio && styles.activeButton]}
-          onPress={() => setFastAudio(!fastAudio)}
+          style={[styles.button, slowAudio && styles.activeButton]}
+          onPress={toggleSpeed}
         >
-          <Text style={styles.buttonText}>
-            {fastAudio ? "Normal Speed" : "Fast Speed"}
-          </Text>
+          <Text style={styles.buttonText}>Slow</Text>
         </TouchableOpacity>
       </View>
 
       {activeSection === "months" && (
         <FlatList
           data={months}
-          renderItem={(item) => renderItem({ ...item, section: "month" })}
+          renderItem={(item) => renderItem({ section: "month", ...item })}
           keyExtractor={(item) => item}
         />
       )}
@@ -195,7 +223,7 @@ export default function CalendarScreen() {
       {activeSection === "weeks" && (
         <FlatList
           data={weekdays}
-          renderItem={(item) => renderItem({ ...item, section: "weekday" })}
+          renderItem={(item) => renderItem({ section: "week", ...item })}
           keyExtractor={(item) => item}
         />
       )}

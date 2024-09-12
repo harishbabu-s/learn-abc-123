@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { View, ScrollView, Text, StyleSheet, TextInput } from "react-native";
+import { View, ScrollView, Text, StyleSheet } from "react-native";
 
-const DynamicNumberSelector = (placeValue) => {
+const DynamicNumberSelector = ({ placeValue, numberReturnFunction }) => {
   const placeValueNos =
     placeValue === "Hundreds"
       ? 3
@@ -17,21 +17,22 @@ const DynamicNumberSelector = (placeValue) => {
 
   const handleScroll = (index, event) => {
     const { contentOffset } = event.nativeEvent;
-    const currentIndex = Math.round(contentOffset.y / 100);
+    const currentIndex = Math.round(contentOffset.y / 70);
     const updatedNumber = [...selectedNumber];
     updatedNumber[index] = currentIndex;
     setSelectedNumber(updatedNumber);
   };
 
-  //   const handleNumDigitsChange = (text) => {
-  //     const newNumDigits = parseInt(text) || 0;
-  //     setNumDigits(newNumDigits);
-  //     setSelectedNumber(Array(newNumDigits).fill(0));
-  //   };
+  const joinArrayToNumber = (arr) => {
+    const joinedString = arr.join("");
+    const number = parseInt(joinedString, 10);
+    return isNaN(number) ? 0 : number;
+  };
+  numberReturnFunction(joinArrayToNumber(selectedNumber));
 
   return (
     <View style={styles.container}>
-      <View style={styles.numberContainer}>
+      <View style={styles.placeNumberContainer}>
         {Array.from({ length: placeValueNos }, (_, index) => index).map(
           (index) => (
             <ScrollView
@@ -39,16 +40,16 @@ const DynamicNumberSelector = (placeValue) => {
               style={styles.scrollView}
               contentContainerStyle={styles.contentContainer}
               onScroll={(event) => handleScroll(index, event)}
-              snapToInterval={100}
+              snapToInterval={70}
               snapToAlignment="top"
               decelerationRate="fast"
               bounces={false}
             >
               {Array.from({ length: 10 }, (_, i) => i).map((number) => (
-                <View key={number} style={styles.numberItem}>
+                <View key={number} style={styles.placeNumberItem}>
                   <Text
                     style={[
-                      styles.numberText,
+                      styles.placeNumberText,
                       number === selectedNumber[index]
                         ? styles.selectedNumber
                         : null,
@@ -62,9 +63,6 @@ const DynamicNumberSelector = (placeValue) => {
           )
         )}
       </View>
-      <Text style={styles.selectedNumberText}>
-        Selected Number: {selectedNumber.join("")}
-      </Text>
     </View>
   );
 };
@@ -74,52 +72,32 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#000",
   },
-  inputContainer: {
+  placeNumberContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  label: {
-    color: "#fff",
-    marginRight: 10,
-  },
-  input: {
-    backgroundColor: "#fff",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-    width: 80,
-  },
-  numberContainer: {
-    flexDirection: "row",
-    marginBottom: 20,
+    marginBottom: 40,
+    borderWidth: 1,
   },
   scrollView: {
     width: 100,
     height: 200,
-    marginHorizontal: 10,
+    marginHorizontal: 4,
   },
   contentContainer: {
-    paddingVertical: 50,
+    paddingVertical: 60,
   },
-  numberItem: {
-    height: 100,
+  placeNumberItem: {
+    height: 70,
     justifyContent: "center",
     alignItems: "center",
   },
-  numberText: {
+  placeNumberText: {
     fontSize: 48,
-    color: "#fff",
+    color: "#00000030",
   },
   selectedNumber: {
     fontWeight: "bold",
-    color: "#ff0",
-  },
-  selectedNumberText: {
-    fontSize: 24,
-    color: "#fff",
+    color: "#000000",
   },
 });
 

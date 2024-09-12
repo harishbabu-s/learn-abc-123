@@ -1,4 +1,3 @@
-// screens/NumbersScreen.js
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -8,10 +7,9 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
-import { Audio } from "expo-av";
 
-import { numberSounds } from "../utils/AudioMappings";
-import { DynamicNumberSelector } from "../utils/placeSelectorHelper";
+import { playNumberSound } from "../utils/PlayNumberSound";
+import DynamicNumberSelector from "../utils/placeSelectorHelper";
 
 const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
 const COLUMN_COUNT = 10;
@@ -22,7 +20,13 @@ export default function NumbersScreen() {
   const [sound, setSound] = useState();
   const [showGrid, setShowGrid] = useState(true);
   const [selectedPlace, setSelectedPlace] = useState("Hundreds");
+  const [ReturnedNumber, setReturnedNumber] = useState("");
 
+  const handleNumberChange = (newNumber) => {
+    setReturnedNumber(newNumber);
+  };
+
+  const placeValues = ["Hundreds", "Thousands", "Lakhs"];
   useEffect(() => {
     return sound
       ? () => {
@@ -31,85 +35,85 @@ export default function NumbersScreen() {
       : undefined;
   }, [sound]);
 
-  async function playNumberSound(number) {
-    try {
-      if (sound) {
-        await sound.unloadAsync();
-      }
+  // async function playNumberSound(number) {
+  //   try {
+  //     if (sound) {
+  //       await sound.unloadAsync();
+  //     }
 
-      const playAudioFile = async (fileNumber) => {
-        if (!numberSounds[fileNumber]) {
-          throw new Error(`Sound file not found for number: ${fileNumber}`);
-        }
-        const { sound: newSound } = await Audio.Sound.createAsync(
-          numberSounds[fileNumber]
-        );
-        await newSound.setRateAsync(slowAudio ? 0.3 : 1, true);
-        await newSound.playAsync();
+  //     const playAudioFile = async (fileNumber) => {
+  //       if (!numberSounds[fileNumber]) {
+  //         throw new Error(`Sound file not found for number: ${fileNumber}`);
+  //       }
+  //       const { sound: newSound } = await Audio.Sound.createAsync(
+  //         numberSounds[fileNumber]
+  //       );
+  //       await newSound.setRateAsync(slowAudio ? 0.3 : 1, true);
+  //       await newSound.playAsync();
 
-        // await new Promise((resolve) => {
-        //   newSound.setOnPlaybackStatusUpdate((status) => {
-        //     if (status.didJustFinish) {
-        //       // newSound.setOnPlaybackStatusUpdate(null);
-        //       resolve();
-        //     }
-        //   });
-        //   // newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-        // });
+  //       // await new Promise((resolve) => {
+  //       //   newSound.setOnPlaybackStatusUpdate((status) => {
+  //       //     if (status.didJustFinish) {
+  //       //       // newSound.setOnPlaybackStatusUpdate(null);
+  //       //       resolve();
+  //       //     }
+  //       //   });
+  //       //   // newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+  //       // });
 
-        // let status = await newSound.getStatusAsync();
-        // while (!status.didJustFinish) {
-        //   await new Promise((resolve) => setTimeout(resolve, 100));
-        //   status = await newSound.getStatusAsync();
-        // }
-        // await newSound.unloadAsync();
+  //       // let status = await newSound.getStatusAsync();
+  //       // while (!status.didJustFinish) {
+  //       //   await new Promise((resolve) => setTimeout(resolve, 100));
+  //       //   status = await newSound.getStatusAsync();
+  //       // }
+  //       // await newSound.unloadAsync();
 
-        await new Promise((resolve) =>
-          setTimeout(resolve, slowAudio ? 4000 : 1500)
-        );
-        await newSound.unloadAsync();
-      };
+  //       await new Promise((resolve) =>
+  //         setTimeout(resolve, slowAudio ? 4000 : 1500)
+  //       );
+  //       await newSound.unloadAsync();
+  //     };
 
-      // if (
-      //   number <= 20 ||
-      //   number === 30 ||
-      //   number === 40 ||
-      //   number === 50 ||
-      //   number === 60 ||
-      //   number === 70 ||
-      //   number === 80 ||
-      //   number === 90 ||
-      //   number === 100
-      // ) {
-      //   await playAudioFile(number);
-      // } else {
-      //   const tens = Math.floor(number / 10) * 10;
-      //   const ones = number % 10;
-      //   await playAudioFile(tens);
-      //   if (ones !== 0) {
-      //     await playAudioFile(ones);
-      //   }
-      // }
-      if (number <= 20) {
-        await playAudioFile(number);
-      } else if (number < 100) {
-        const tensDigit = Math.floor(number / 10) * 10;
-        const onesDigit = number % 10;
-        await playAudioFile(tensDigit);
-        if (onesDigit !== 0) {
-          await playAudioFile(onesDigit);
-        }
-      } else {
-        await playAudioFile(100);
-      }
-    } catch (error) {
-      console.error("Error playing sound:", error);
-      Alert.alert(
-        "Error",
-        "There was an error playing the sound. Please try again."
-      );
-    }
-  }
+  //     // if (
+  //     //   number <= 20 ||
+  //     //   number === 30 ||
+  //     //   number === 40 ||
+  //     //   number === 50 ||
+  //     //   number === 60 ||
+  //     //   number === 70 ||
+  //     //   number === 80 ||
+  //     //   number === 90 ||
+  //     //   number === 100
+  //     // ) {
+  //     //   await playAudioFile(number);
+  //     // } else {
+  //     //   const tens = Math.floor(number / 10) * 10;
+  //     //   const ones = number % 10;
+  //     //   await playAudioFile(tens);
+  //     //   if (ones !== 0) {
+  //     //     await playAudioFile(ones);
+  //     //   }
+  //     // }
+  //     if (number <= 20) {
+  //       await playAudioFile(number);
+  //     } else if (number < 100) {
+  //       const tensDigit = Math.floor(number / 10) * 10;
+  //       const onesDigit = number % 10;
+  //       await playAudioFile(tensDigit);
+  //       if (onesDigit !== 0) {
+  //         await playAudioFile(onesDigit);
+  //       }
+  //     } else {
+  //       await playAudioFile(100);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error playing sound:", error);
+  //     Alert.alert(
+  //       "Error",
+  //       "There was an error playing the sound. Please try again."
+  //     );
+  //   }
+  // }
 
   const toggleSpeed = () => {
     setSlowAudio(!slowAudio);
@@ -128,7 +132,7 @@ export default function NumbersScreen() {
             <TouchableOpacity
               key={number}
               style={styles.numberBox}
-              onPress={() => playNumberSound(number)}
+              onPress={() => playNumberSound(number, slowAudio, sound)}
             >
               <Text style={styles.numberText}>{number}</Text>
             </TouchableOpacity>
@@ -137,6 +141,18 @@ export default function NumbersScreen() {
       );
     }
     return columns;
+  };
+
+  const commaSeparated = (num) => {
+    if (num < 1000) {
+      return num.toString();
+    } else if (num >= 1000 && num <= 99999) {
+      return num.toLocaleString("en-IN"); // 'en-IN' for Indian numbering, use 'en-US' for US style
+    } else if (num >= 100000 && num < 10000000) {
+      return num.toLocaleString("en-IN");
+    } else if (num >= 10000000) {
+      return num.toLocaleString("en-IN");
+    }
   };
 
   // const renderPlaceValueSelector = () => (
@@ -152,6 +168,7 @@ export default function NumbersScreen() {
   //     ))}
   //   </ScrollView>
   // );
+  // console.log(ReturnedNumber, "------");
 
   return (
     <View style={styles.container}>
@@ -207,28 +224,36 @@ export default function NumbersScreen() {
           <View style={styles.placeValueContainer}>
             {selectedPlace === "Hundreds" && (
               // <>{DynamicNumberSelector("Hundreds")}</>
-              <DynamicNumberSelector />
+              <DynamicNumberSelector
+                placeValue="Hundreds"
+                numberReturnFunction={handleNumberChange}
+              />
             )}
             {selectedPlace === "Thousands" && (
-              <>
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-              </>
+              <DynamicNumberSelector
+                placeValue="Thousands"
+                numberReturnFunction={handleNumberChange}
+              />
             )}
             {selectedPlace === "Lakhs" && (
-              <>
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-                {renderPlaceValueSelector()}
-              </>
+              <DynamicNumberSelector
+                placeValue="Lakhs"
+                numberReturnFunction={handleNumberChange}
+              />
             )}
+          </View>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text style={styles.numberText}>
+              {commaSeparated(ReturnedNumber)}
+            </Text>
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.numberBox}
+              onPress={() => playNumberSound(ReturnedNumber, slowAudio, sound)}
+            >
+              <Text style={styles.numberText}>{ReturnedNumber}</Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}
@@ -267,6 +292,7 @@ const styles = StyleSheet.create({
   },
   numberBox: {
     height: 75,
+    paddingHorizontal: 10,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f0f0f0",

@@ -60,4 +60,33 @@ export const numberSounds = {
   90: require("../assets/numbers/90.mp3"),
   100: require("../assets/numbers/100.mp3"),
   1000: require("../assets/numbers/1000.mp3"),
+  100000: require("../assets/numbers/lakh.mp3"),
+  10000000: require("../assets/numbers/crore.mp3"),
+};
+
+export const calendar = {
+  month: {
+    january: require("../assets/calendar/January.mp3"),
+    february: require("../assets/calendar/February.mp3"),
+    march: require("../assets/calendar/March.mp3"),
+    april: require("../assets/calendar/April.mp3"),
+    may: require("../assets/calendar/May.mp3"),
+    june: require("../assets/calendar/June.mp3"),
+    july: require("../assets/calendar/July.mp3"),
+    august: require("../assets/calendar/August.mp3"),
+    september: require("../assets/calendar/September.mp3"),
+    october: require("../assets/calendar/October.mp3"),
+    november: require("../assets/calendar/November.mp3"),
+    december: require("../assets/calendar/December.mp3"),
+  },
+
+  week: {
+    monday: require("../assets/calendar/Monday.mp3"),
+    tuesday: require("../assets/calendar/Tuesday.mp3"),
+    wednesday: require("../assets/calendar/Wednesday.mp3"),
+    thursday: require("../assets/calendar/Thursday.mp3"),
+    friday: require("../assets/calendar/Friday.mp3"),
+    saturday: require("../assets/calendar/Saturday.mp3"),
+    sunday: require("../assets/calendar/Sunday.mp3"),
+  },
 };
