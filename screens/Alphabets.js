@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 import { enableScreens } from "react-native-screens";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { alphabetSounds, smallSound } from "../utils/AudioMappings";
 import slowImg from "../assets/slow_audio.png";
@@ -90,41 +91,43 @@ export default function AlphabetsScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={buttonStyles.buttonContainer}>
-        <TouchableOpacity
-          style={[
-            buttonStyles.button,
-            showUppercase && buttonStyles.activeButton,
-          ]}
-          onPress={() => setShowUppercase(true)}
-        >
-          <Text style={buttonStyles.buttonText}>ABCD</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            buttonStyles.button,
-            !showUppercase && buttonStyles.activeButton,
-          ]}
-          onPress={() => setShowUppercase(false)}
-        >
-          <Text style={buttonStyles.buttonText}>abdc</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
-          onPress={toggleSpeed}
-        >
-          <Image source={slowImg} style={buttonStyles.slowImage} />
-        </TouchableOpacity>
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        <View style={buttonStyles.buttonContainer}>
+          <TouchableOpacity
+            style={[
+              buttonStyles.button,
+              showUppercase && buttonStyles.activeButton,
+            ]}
+            onPress={() => setShowUppercase(true)}
+          >
+            <Text style={buttonStyles.buttonText}>ABCD</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              buttonStyles.button,
+              !showUppercase && buttonStyles.activeButton,
+            ]}
+            onPress={() => setShowUppercase(false)}
+          >
+            <Text style={buttonStyles.buttonText}>abdc</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
+            onPress={toggleSpeed}
+          >
+            <Image source={slowImg} style={buttonStyles.slowImage} />
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          data={alphabets}
+          renderItem={renderAlphabet}
+          keyExtractor={(item) => item}
+          numColumns={5}
+          contentContainerStyle={styles.alphabetContainer}
+        />
       </View>
-      <FlatList
-        data={alphabets}
-        renderItem={renderAlphabet}
-        keyExtractor={(item) => item}
-        numColumns={5}
-        contentContainerStyle={styles.alphabetContainer}
-      />
-    </View>
+    </SafeAreaProvider>
   );
 }
 
@@ -134,11 +137,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   alphabetContainer: {
+    flex: 1,
     alignItems: "center",
+    marginTop: 40,
   },
   alphabetBox: {
-    width: 80,
-    height: 80,
+    width: 60,
+    height: 60,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f0f0f0",

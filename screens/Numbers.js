@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import { enableScreens } from "react-native-screens";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { playNumberSound } from "../utils/PlayNumberSound";
 import DynamicNumberSelector from "../utils/placeSelectorHelper";
@@ -82,99 +83,106 @@ export default function NumbersScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={buttonStyles.buttonContainer}>
-        <TouchableOpacity
-          style={[buttonStyles.button, showGrid && buttonStyles.activeButton]}
-          onPress={() => setShowGrid(true)}
-        >
-          <Text style={buttonStyles.buttonText}>1 - 100</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[buttonStyles.button, !showGrid && buttonStyles.activeButton]}
-          onPress={() => setShowGrid(false)}
-        >
-          <Text style={buttonStyles.buttonText}>0 - 99,99,999</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
-          onPress={toggleSpeed}
-        >
-          <Image source={slowImg} style={buttonStyles.slowImage} />
-        </TouchableOpacity>
-      </View>
-
-      {showGrid ? (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.columnsContainer}>{renderNumberColumns()}</View>
-        </ScrollView>
-      ) : (
-        <View>
-          <View style={styles.placeButtonContainer}>
-            {placeValues.map((place) => (
-              <TouchableOpacity
-                key={place}
-                style={[
-                  styles.placeButton,
-                  selectedPlace === place && styles.activePlaceButton,
-                ]}
-                onPress={() => setSelectedPlace(place)}
-              >
-                <Text style={styles.placeButtonText}>
-                  {place === "Hundreds"
-                    ? "Hundreds 100s"
-                    : place === "Thousands"
-                    ? "Thousands 1000s"
-                    : place === "Lakhs"
-                    ? "Lakhs 100000s"
-                    : " "}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <View style={styles.placeValueContainer}>
-            {selectedPlace === "Hundreds" && (
-              // <>{DynamicNumberSelector("Hundreds")}</>
-              <DynamicNumberSelector
-                placeValue="Hundreds"
-                numberReturnFunction={handleNumberChange}
-              />
-            )}
-            {selectedPlace === "Thousands" && (
-              <DynamicNumberSelector
-                placeValue="Thousands"
-                numberReturnFunction={handleNumberChange}
-              />
-            )}
-            {selectedPlace === "Lakhs" && (
-              <DynamicNumberSelector
-                placeValue="Lakhs"
-                numberReturnFunction={handleNumberChange}
-              />
-            )}
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              paddingBottom: 10,
-            }}
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        <View style={buttonStyles.buttonContainer}>
+          <TouchableOpacity
+            style={[buttonStyles.button, showGrid && buttonStyles.activeButton]}
+            onPress={() => setShowGrid(true)}
           >
-            <Text style={styles.numberText}>
-              {commaSeparated(ReturnedNumber)}
-            </Text>
-          </View>
-          <View>
-            <TouchableOpacity
-              style={styles.numberBox}
-              onPress={() => playNumberSound(ReturnedNumber, slowAudio, sound)}
-            >
-              <Text style={styles.numberText}>{ReturnedNumber}</Text>
-            </TouchableOpacity>
-          </View>
+            <Text style={buttonStyles.buttonText}>1 - 100</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              buttonStyles.button,
+              !showGrid && buttonStyles.activeButton,
+            ]}
+            onPress={() => setShowGrid(false)}
+          >
+            <Text style={buttonStyles.buttonText}>0 - 99,99,999</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
+            onPress={toggleSpeed}
+          >
+            <Image source={slowImg} style={buttonStyles.slowImage} />
+          </TouchableOpacity>
         </View>
-      )}
-    </View>
+
+        {showGrid ? (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.columnsContainer}>{renderNumberColumns()}</View>
+          </ScrollView>
+        ) : (
+          <View>
+            <View style={styles.placeButtonContainer}>
+              {placeValues.map((place) => (
+                <TouchableOpacity
+                  key={place}
+                  style={[
+                    styles.placeButton,
+                    selectedPlace === place && styles.activePlaceButton,
+                  ]}
+                  onPress={() => setSelectedPlace(place)}
+                >
+                  <Text style={styles.placeButtonText}>
+                    {place === "Hundreds"
+                      ? "Hundreds 100s"
+                      : place === "Thousands"
+                      ? "Thousands 1000s"
+                      : place === "Lakhs"
+                      ? "Lakhs 100000s"
+                      : " "}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <View style={styles.placeValueContainer}>
+              {selectedPlace === "Hundreds" && (
+                // <>{DynamicNumberSelector("Hundreds")}</>
+                <DynamicNumberSelector
+                  placeValue="Hundreds"
+                  numberReturnFunction={handleNumberChange}
+                />
+              )}
+              {selectedPlace === "Thousands" && (
+                <DynamicNumberSelector
+                  placeValue="Thousands"
+                  numberReturnFunction={handleNumberChange}
+                />
+              )}
+              {selectedPlace === "Lakhs" && (
+                <DynamicNumberSelector
+                  placeValue="Lakhs"
+                  numberReturnFunction={handleNumberChange}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                paddingBottom: 10,
+              }}
+            >
+              <Text style={styles.numberText}>
+                {commaSeparated(ReturnedNumber)}
+              </Text>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.numberBox}
+                onPress={() =>
+                  playNumberSound(ReturnedNumber, slowAudio, sound)
+                }
+              >
+                <Text style={styles.numberText}>{ReturnedNumber}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+    </SafeAreaProvider>
   );
 }
 
@@ -191,12 +199,13 @@ const styles = StyleSheet.create({
     marginRight: 2,
   },
   numberBox: {
-    height: 75,
+    height: 60,
     paddingHorizontal: 5,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f0f0f0",
     marginBottom: 5,
+    marginRight: 5,
     borderRadius: 5,
     borderWidth: 2,
   },

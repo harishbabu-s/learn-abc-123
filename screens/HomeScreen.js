@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { enableScreens } from "react-native-screens";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 enableScreens();
 
@@ -28,31 +29,33 @@ export default function HomeScreen({ navigation }) {
   const day = weekday[currentDate.getDay()];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Learn ABC 123</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Alphabets")}
-      >
-        <Text style={styles.buttonText}>Alphabets - A B C ...</Text>
-      </TouchableOpacity>
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        <Text style={styles.title}>Learn ABC 123</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Alphabets")}
+        >
+          <Text style={styles.buttonText}>Alphabets - A B C ...</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Numbers")}
-      >
-        <Text style={styles.buttonText}>Numbers - 1 2 3 ...</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Numbers")}
+        >
+          <Text style={styles.buttonText}>Numbers - 1 2 3 ...</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Calendar")}
-      >
-        <Text style={styles.buttonText}>
-          Calendar - {formattedDate} , {day}
-        </Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Calendar")}
+        >
+          <Text style={styles.buttonText}>
+            Calendar - {formattedDate} , {day}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaProvider>
   );
 }
 {

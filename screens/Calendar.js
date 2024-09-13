@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 import { enableScreens } from "react-native-screens";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { calendar } from "../utils/AudioMappings";
 import slowImg from "../assets/slow_audio.png";
@@ -176,82 +177,84 @@ export default function CalendarScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <View style={buttonStyles.buttonContainer}>
-        <TouchableOpacity
-          style={[
-            buttonStyles.button,
-            activeSection === "months" && buttonStyles.activeButton,
-          ]}
-          onPress={() => setActiveSection("months")}
-        >
-          <Text style={buttonStyles.buttonText}>Months</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            buttonStyles.button,
-            activeSection === "weeks" && buttonStyles.activeButton,
-          ]}
-          onPress={() => setActiveSection("weeks")}
-        >
-          <Text style={buttonStyles.buttonText}>Weeks</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            buttonStyles.button,
-            activeSection === "date" && buttonStyles.activeButton,
-          ]}
-          onPress={() => setActiveSection("date")}
-        >
-          <Text style={buttonStyles.buttonText}>Date</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
-          onPress={toggleSpeed}
-        >
-          <Image source={slowImg} style={buttonStyles.slowImage} />
-        </TouchableOpacity>
-      </View>
-
-      {activeSection === "months" && (
-        <FlatList
-          data={months}
-          renderItem={(item) => renderItem({ section: "month", ...item })}
-          keyExtractor={(item) => item}
-        />
-      )}
-
-      {activeSection === "weeks" && (
-        <FlatList
-          data={weekdays}
-          renderItem={(item) => renderItem({ section: "week", ...item })}
-          keyExtractor={(item) => item}
-        />
-      )}
-
-      {activeSection === "date" && (
-        <View>
-          {renderDateSelector()}
+    <SafeAreaProvider>
+      <View style={styles.container}>
+        <View style={buttonStyles.buttonContainer}>
           <TouchableOpacity
-            style={styles.readDateButton}
-            onPress={() =>
-              playSound(
-                `date_${selectedDate.day}_${selectedDate.month}_${selectedDate.year}`
-              )
-            }
+            style={[
+              buttonStyles.button,
+              activeSection === "months" && buttonStyles.activeButton,
+            ]}
+            onPress={() => setActiveSection("months")}
           >
-            <Text style={styles.buttonText}>
-              Read Date: {selectedDate.day}/{selectedDate.month}/
-              {selectedDate.year}
-            </Text>
+            <Text style={buttonStyles.buttonText}>Months</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              buttonStyles.button,
+              activeSection === "weeks" && buttonStyles.activeButton,
+            ]}
+            onPress={() => setActiveSection("weeks")}
+          >
+            <Text style={buttonStyles.buttonText}>Weeks</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              buttonStyles.button,
+              activeSection === "date" && buttonStyles.activeButton,
+            ]}
+            onPress={() => setActiveSection("date")}
+          >
+            <Text style={buttonStyles.buttonText}>Date</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
+            onPress={toggleSpeed}
+          >
+            <Image source={slowImg} style={buttonStyles.slowImage} />
           </TouchableOpacity>
         </View>
-      )}
-      <View>
-        <Text>Note : Spell, తెలుగు and Date section not implemented.</Text>
-        <Text>Will be comming soon in version 2</Text>
+
+        {activeSection === "months" && (
+          <FlatList
+            data={months}
+            renderItem={(item) => renderItem({ section: "month", ...item })}
+            keyExtractor={(item) => item}
+          />
+        )}
+
+        {activeSection === "weeks" && (
+          <FlatList
+            data={weekdays}
+            renderItem={(item) => renderItem({ section: "week", ...item })}
+            keyExtractor={(item) => item}
+          />
+        )}
+
+        {activeSection === "date" && (
+          <View>
+            {renderDateSelector()}
+            <TouchableOpacity
+              style={styles.readDateButton}
+              onPress={() =>
+                playSound(
+                  `date_${selectedDate.day}_${selectedDate.month}_${selectedDate.year}`
+                )
+              }
+            >
+              <Text style={styles.buttonText}>
+                Read Date: {selectedDate.day}/{selectedDate.month}/
+                {selectedDate.year}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        <View>
+          <Text>Note : Spell, తెలుగు and Date section not implemented.</Text>
+          <Text>Will be comming soon in version 2</Text>
+        </View>
       </View>
-    </View>
+    </SafeAreaProvider>
   );
 }
 
@@ -263,7 +266,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 5,
   },
   item: {
     paddingHorizontal: 10,
@@ -283,7 +286,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF9800",
   },
   itemText: {
-    fontSize: 28,
+    fontSize: 24,
+    padding: 3,
   },
   dateContainer: {
     flexDirection: "row",
