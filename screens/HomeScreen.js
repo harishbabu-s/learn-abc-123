@@ -49,15 +49,16 @@ export default function HomeScreen({ navigation }) {
           Calendar - {formattedDate} , {day}
         </Text>
       </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("temp")}
-      >
-        <Text style={styles.buttonText}>Temp Testing</Text>
-      </TouchableOpacity>
     </View>
   );
+}
+{
+  /* <TouchableOpacity
+  style={styles.button}
+  onPress={() => navigation.navigate("temp")}
+>
+  <Text style={styles.buttonText}>Temp Testing</Text>
+</TouchableOpacity> */
 }
 
 const styles = StyleSheet.create({

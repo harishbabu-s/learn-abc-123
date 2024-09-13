@@ -18,16 +18,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.harishbabus.learnabc123"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "5f6a93ea-b220-4822-9da5-631140ea3264"
-      }
-    },
-    "owner": "harishbabu-s"
+      "favicon": "./assets/icon.png"
+    }
   }
 }

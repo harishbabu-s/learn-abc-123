@@ -88,24 +88,6 @@ export async function playNumberSound(number, slowAudio, sound) {
         number = -1;
       }
     }
-    // if (
-    //   number <= 20 ||
-    //   number === 100 ||
-    //   number === 1000 ||
-    //   number === 100000 ||
-    //   number === 10000000
-    // ) {
-    //   await playAudioFile(number);
-    // } else if (number < 100) {
-    //   const tensDigit = Math.floor(number / 10) * 10;
-    //   const onesDigit = number % 10;
-    //   await playAudioFile(tensDigit);
-    //   if (onesDigit !== 0) {
-    //     await playAudioFile(onesDigit);
-    //   }
-    // } else {
-    //   await playAudioFile(0);
-    // }
   } catch (error) {
     console.error("Error playing sound:", error);
     Alert.alert(

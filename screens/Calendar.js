@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   TouchableOpacity,
   FlatList,
@@ -9,6 +10,8 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 import { calendar } from "../utils/AudioMappings";
+import slowImg from "../assets/slow_audio.png";
+import buttonStyles from "../styles/buttons";
 
 const months = [
   "January",
@@ -53,12 +56,6 @@ export default function CalendarScreen() {
   });
 
   async function playSound(section, atribute) {
-    // const { sound } = await Audio.Sound
-    //   .createAsync
-    //   //   require(`../assets/calendar/${fileName}.mp3`)
-    //   ();
-    // setSound(sound);
-    // await sound.playAsync();
     try {
       if (sound) {
         await sound.unloadAsync();
@@ -109,22 +106,22 @@ export default function CalendarScreen() {
   const renderItem = ({ section, item }) => (
     <View style={styles.itemContainer}>
       <TouchableOpacity
-        style={styles.itemButton}
+        style={[styles.itemButton, styles.item]}
         onPress={() => playSound(section, item.toLowerCase())}
       >
         <Text style={styles.itemText}>{item}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.spellButton}
+        style={[styles.spellButton, styles.item]}
         onPress={() => spellWord(item)}
       >
-        <Text style={styles.buttonText}>Spell</Text>
+        <Text style={styles.itemText}>Spell</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.languageButton}
+        style={[styles.languageButton, styles.item]}
         onPress={() => playAlternateLanguage(item)}
       >
-        <Text style={styles.buttonText}>Alt Lang</Text>
+        <Text style={styles.itemText}>తెలుగు</Text>
       </TouchableOpacity>
     </View>
   );
@@ -176,39 +173,39 @@ export default function CalendarScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
+      <View style={buttonStyles.buttonContainer}>
         <TouchableOpacity
           style={[
-            styles.button,
-            activeSection === "months" && styles.activeButton,
+            buttonStyles.button,
+            activeSection === "months" && buttonStyles.activeButton,
           ]}
           onPress={() => setActiveSection("months")}
         >
-          <Text style={styles.buttonText}>Months</Text>
+          <Text style={buttonStyles.buttonText}>Months</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
-            styles.button,
-            activeSection === "weeks" && styles.activeButton,
+            buttonStyles.button,
+            activeSection === "weeks" && buttonStyles.activeButton,
           ]}
           onPress={() => setActiveSection("weeks")}
         >
-          <Text style={styles.buttonText}>Weeks</Text>
+          <Text style={buttonStyles.buttonText}>Weeks</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
-            styles.button,
-            activeSection === "date" && styles.activeButton,
+            buttonStyles.button,
+            activeSection === "date" && buttonStyles.activeButton,
           ]}
           onPress={() => setActiveSection("date")}
         >
-          <Text style={styles.buttonText}>Date</Text>
+          <Text style={buttonStyles.buttonText}>Date</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, slowAudio && styles.activeButton]}
+          style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
           onPress={toggleSpeed}
         >
-          <Text style={styles.buttonText}>Slow</Text>
+          <Image source={slowImg} style={buttonStyles.slowImage} />
         </TouchableOpacity>
       </View>
 
@@ -255,50 +252,30 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "#007AFF",
-    padding: 10,
-    borderRadius: 5,
-  },
-  activeButton: {
-    backgroundColor: "#0056b3",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 14,
-  },
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
   },
-  itemButton: {
-    flex: 2,
-    backgroundColor: "#f0f0f0",
-    padding: 10,
+  item: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 5,
     marginRight: 10,
+  },
+  itemButton: {
+    flex: 2,
+    backgroundColor: "#dddddd",
   },
   spellButton: {
     flex: 1,
     backgroundColor: "#4CAF50",
-    padding: 10,
-    borderRadius: 5,
-    marginRight: 10,
   },
   languageButton: {
-    flex: 1,
     backgroundColor: "#FF9800",
-    padding: 10,
-    borderRadius: 5,
   },
   itemText: {
-    fontSize: 18,
+    fontSize: 28,
   },
   dateContainer: {
     flexDirection: "row",

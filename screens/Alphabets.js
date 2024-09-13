@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   TouchableOpacity,
   FlatList,
@@ -10,6 +11,8 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 import { alphabetSounds, smallSound } from "../utils/AudioMappings";
+import slowImg from "../assets/slow_audio.png";
+import buttonStyles from "../styles/buttons";
 
 const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
@@ -84,24 +87,30 @@ export default function AlphabetsScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
+      <View style={buttonStyles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.button, showUppercase && styles.activeButton]}
+          style={[
+            buttonStyles.button,
+            showUppercase && buttonStyles.activeButton,
+          ]}
           onPress={() => setShowUppercase(true)}
         >
-          <Text style={styles.buttonText}>ABCD</Text>
+          <Text style={buttonStyles.buttonText}>ABCD</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, !showUppercase && styles.activeButton]}
+          style={[
+            buttonStyles.button,
+            !showUppercase && buttonStyles.activeButton,
+          ]}
           onPress={() => setShowUppercase(false)}
         >
-          <Text style={styles.buttonText}>abdc</Text>
+          <Text style={buttonStyles.buttonText}>abdc</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, slowAudio && styles.activeButton]}
+          style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
           onPress={toggleSpeed}
         >
-          <Text style={styles.buttonText}>Slow</Text>
+          <Image source={slowImg} style={buttonStyles.slowImage} />
         </TouchableOpacity>
       </View>
       <FlatList
@@ -119,24 +128,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "blue",
-    padding: 10,
-    borderRadius: 5,
-    textAlign: "center",
-  },
-  activeButton: {
-    backgroundColor: "green",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 32,
   },
   alphabetContainer: {
     alignItems: "center",

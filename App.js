@@ -1,6 +1,11 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// import { enableScreens } from "react-native-screens";
+// import "react-native-gesture-handler";
+
+// enableScreens();
+
 import HomeScreen from "./screens/HomeScreen";
 import AlphabetsScreen from "./screens/Alphabets";
 import NumbersScreen from "./screens/Numbers";

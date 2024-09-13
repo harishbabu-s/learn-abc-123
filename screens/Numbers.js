@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
@@ -10,6 +11,8 @@ import {
 
 import { playNumberSound } from "../utils/PlayNumberSound";
 import DynamicNumberSelector from "../utils/placeSelectorHelper";
+import slowImg from "../assets/slow_audio.png";
+import buttonStyles from "../styles/buttons";
 
 const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
 const COLUMN_COUNT = 10;
@@ -34,86 +37,6 @@ export default function NumbersScreen() {
         }
       : undefined;
   }, [sound]);
-
-  // async function playNumberSound(number) {
-  //   try {
-  //     if (sound) {
-  //       await sound.unloadAsync();
-  //     }
-
-  //     const playAudioFile = async (fileNumber) => {
-  //       if (!numberSounds[fileNumber]) {
-  //         throw new Error(`Sound file not found for number: ${fileNumber}`);
-  //       }
-  //       const { sound: newSound } = await Audio.Sound.createAsync(
-  //         numberSounds[fileNumber]
-  //       );
-  //       await newSound.setRateAsync(slowAudio ? 0.3 : 1, true);
-  //       await newSound.playAsync();
-
-  //       // await new Promise((resolve) => {
-  //       //   newSound.setOnPlaybackStatusUpdate((status) => {
-  //       //     if (status.didJustFinish) {
-  //       //       // newSound.setOnPlaybackStatusUpdate(null);
-  //       //       resolve();
-  //       //     }
-  //       //   });
-  //       //   // newSound.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-  //       // });
-
-  //       // let status = await newSound.getStatusAsync();
-  //       // while (!status.didJustFinish) {
-  //       //   await new Promise((resolve) => setTimeout(resolve, 100));
-  //       //   status = await newSound.getStatusAsync();
-  //       // }
-  //       // await newSound.unloadAsync();
-
-  //       await new Promise((resolve) =>
-  //         setTimeout(resolve, slowAudio ? 4000 : 1500)
-  //       );
-  //       await newSound.unloadAsync();
-  //     };
-
-  //     // if (
-  //     //   number <= 20 ||
-  //     //   number === 30 ||
-  //     //   number === 40 ||
-  //     //   number === 50 ||
-  //     //   number === 60 ||
-  //     //   number === 70 ||
-  //     //   number === 80 ||
-  //     //   number === 90 ||
-  //     //   number === 100
-  //     // ) {
-  //     //   await playAudioFile(number);
-  //     // } else {
-  //     //   const tens = Math.floor(number / 10) * 10;
-  //     //   const ones = number % 10;
-  //     //   await playAudioFile(tens);
-  //     //   if (ones !== 0) {
-  //     //     await playAudioFile(ones);
-  //     //   }
-  //     // }
-  //     if (number <= 20) {
-  //       await playAudioFile(number);
-  //     } else if (number < 100) {
-  //       const tensDigit = Math.floor(number / 10) * 10;
-  //       const onesDigit = number % 10;
-  //       await playAudioFile(tensDigit);
-  //       if (onesDigit !== 0) {
-  //         await playAudioFile(onesDigit);
-  //       }
-  //     } else {
-  //       await playAudioFile(100);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error playing sound:", error);
-  //     Alert.alert(
-  //       "Error",
-  //       "There was an error playing the sound. Please try again."
-  //     );
-  //   }
-  // }
 
   const toggleSpeed = () => {
     setSlowAudio(!slowAudio);
@@ -155,41 +78,26 @@ export default function NumbersScreen() {
     }
   };
 
-  // const renderPlaceValueSelector = () => (
-  //   <ScrollView style={styles.placeValueSelector}>
-  //     {digitOptions.map((digit) => (
-  //       <TouchableOpacity
-  //         key={digit}
-  //         style={styles.digitBox}
-  //         onPress={() => playNumberSound(digit)}
-  //       >
-  //         <Text style={styles.digitText}>{digit}</Text>
-  //       </TouchableOpacity>
-  //     ))}
-  //   </ScrollView>
-  // );
-  // console.log(ReturnedNumber, "------");
-
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
+      <View style={buttonStyles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.button, showGrid && styles.activeButton]}
+          style={[buttonStyles.button, showGrid && buttonStyles.activeButton]}
           onPress={() => setShowGrid(true)}
         >
-          <Text style={styles.buttonText}>1 - 100</Text>
+          <Text style={buttonStyles.buttonText}>1 - 100</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, !showGrid && styles.activeButton]}
+          style={[buttonStyles.button, !showGrid && buttonStyles.activeButton]}
           onPress={() => setShowGrid(false)}
         >
-          <Text style={styles.buttonText}>0 - 99,99,999</Text>
+          <Text style={buttonStyles.buttonText}>0 - 99,99,999</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, slowAudio && styles.activeButton]}
+          style={[buttonStyles.slow, slowAudio && buttonStyles.activeSlow]}
           onPress={toggleSpeed}
         >
-          <Text style={styles.buttonText}>Slow</Text>
+          <Image source={slowImg} style={buttonStyles.slowImage} />
         </TouchableOpacity>
       </View>
 
@@ -242,7 +150,13 @@ export default function NumbersScreen() {
               />
             )}
           </View>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              paddingBottom: 10,
+            }}
+          >
             <Text style={styles.numberText}>
               {commaSeparated(ReturnedNumber)}
             </Text>
@@ -266,23 +180,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "blue",
-    padding: 10,
-    borderRadius: 5,
-  },
-  activeButton: {
-    backgroundColor: "green",
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 32,
-  },
   columnsContainer: {
     flexDirection: "row",
   },
@@ -292,7 +189,7 @@ const styles = StyleSheet.create({
   },
   numberBox: {
     height: 75,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f0f0f0",
