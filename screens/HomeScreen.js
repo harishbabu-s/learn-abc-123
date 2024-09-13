@@ -1,5 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { enableScreens } from "react-native-screens";
+
+enableScreens();
 
 export default function HomeScreen({ navigation }) {
   const formatDate = (date) => {

@@ -8,11 +8,14 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
+import { enableScreens } from "react-native-screens";
 
 import { playNumberSound } from "../utils/PlayNumberSound";
 import DynamicNumberSelector from "../utils/placeSelectorHelper";
 import slowImg from "../assets/slow_audio.png";
 import buttonStyles from "../styles/buttons";
+
+enableScreens();
 
 const numbers = Array.from({ length: 100 }, (_, i) => i + 1);
 const COLUMN_COUNT = 10;

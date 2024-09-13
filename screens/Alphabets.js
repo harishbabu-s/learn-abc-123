@@ -10,9 +10,13 @@ import {
   Alert,
 } from "react-native";
 import { Audio } from "expo-av";
+import { enableScreens } from "react-native-screens";
+
 import { alphabetSounds, smallSound } from "../utils/AudioMappings";
 import slowImg from "../assets/slow_audio.png";
 import buttonStyles from "../styles/buttons";
+
+enableScreens();
 
 const alphabets = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 

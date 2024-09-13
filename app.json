@@ -19,10 +19,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.harishbabus.learnabc123"
+      "package": "com.harishbabus.learnabc123",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5f6a93ea-b220-4822-9da5-631140ea3264"
+      }
     }
   }
 }

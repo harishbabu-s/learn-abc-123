@@ -9,9 +9,13 @@ import {
   ScrollView,
 } from "react-native";
 import { Audio } from "expo-av";
+import { enableScreens } from "react-native-screens";
+
 import { calendar } from "../utils/AudioMappings";
 import slowImg from "../assets/slow_audio.png";
 import buttonStyles from "../styles/buttons";
+
+enableScreens();
 
 const months = [
   "January",
@@ -46,7 +50,7 @@ const years = Array.from({ length: 100 }, (_, i) => String(1970 + i));
 export default function CalendarScreen() {
   const currentDate = new Date();
 
-  const [activeSection, setActiveSection] = useState(null);
+  const [activeSection, setActiveSection] = useState("months");
   const [slowAudio, setSlowAudio] = useState(false);
   const [sound, setSound] = useState();
   const [selectedDate, setSelectedDate] = useState({
@@ -243,6 +247,10 @@ export default function CalendarScreen() {
           </TouchableOpacity>
         </View>
       )}
+      <View>
+        <Text>Note : Spell, తెలుగు and Date section not implemented.</Text>
+        <Text>Will be comming soon in version 2</Text>
+      </View>
     </View>
   );
 }
@@ -269,7 +277,7 @@ const styles = StyleSheet.create({
   },
   spellButton: {
     flex: 1,
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#4CAF00",
   },
   languageButton: {
     backgroundColor: "#FF9800",
@@ -300,5 +308,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
+  },
+  noteStatement: {
+    fontSize: "bold",
   },
 });
